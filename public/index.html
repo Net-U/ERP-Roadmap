@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>ERP Kebun - GeoJSON</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link
+            rel="stylesheet"
+            href="https://unpkg.com/leaflet/dist/leaflet.css"
+        />
+        <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    </head>
+    <body>
+        <div id="map" style="height: 100vh"></div>
+
+        <script>
+            // Inisialisasi peta
+            var map = L.map("map").setView([1.234, 103.456], 13);
+
+            // Ganti basemap dengan citra satelit ESRI
+            L.tileLayer(
+                "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
+                {
+                    attribution:
+                        "Tiles © Esri &mdash; Source: Esri, Earthstar Geographics",
+                    maxZoom: 20,
+                }
+            ).addTo(map);
+
+            // Load file GeoJSON
+            fetch("a/aa.geojson")
+                .then((res) => res.json())
+                .then((data) => {
+                    // Tambahkan ke peta dengan style per status
+                    L.geoJSON(data, {
+                        style: function (feature) {
+                            switch (feature.properties.status) {
+                                case "hijau":
+                                    return { color: "green", fillOpacity: 0.5 };
+                                case "kuning":
+                                    return {
+                                        color: "yellow",
+                                        fillOpacity: 0.5,
+                                    };
+                                case "merah":
+                                    return { color: "red", fillOpacity: 0.5 };
+                                case "biru":
+                                    return { color: "blue", fillOpacity: 0.5 };
+                                default:
+                                    return { color: "gray", fillOpacity: 0.5 };
+                            }
+                        },
+                        onEachFeature: function (feature, layer) {
+                            // popup info
+                            layer.bindPopup(
+                                `<b>Blok ${feature.properties.kode}</b><br>
+                Status: ${feature.properties.status}<br>
+                Luas: ${feature.properties.luas || "-"} ha`
+                            );
+                        },
+                    }).addTo(map);
+
+                    // Fit peta ke batas GeoJSON
+                    var bounds = L.geoJSON(data).getBounds();
+                    map.fitBounds(bounds);
+                });
+        </script>
+    </body>
+</html>

@@ -1,0 +1,369 @@
+/* public/css/dashboard.css */
+
+/* quick variables */
+:root {
+    --topbar-height: 60px;
+    --sidebar-left-width: 220px;
+    --sidebar-right-width: 280px;
+    --sidebar-collapsed-width: 60px;
+    --bottombar-height: 280px;
+    --icon-size: 18px;
+    --accent-1: #1c6758;
+    --accent-2: #2d936c;
+    --bg: #f8f9fa;
+}
+
+* {
+    box-sizing: border-box;
+}
+body {
+    font-family: "Poppins", system-ui, -apple-system, "Segoe UI", Roboto,
+        "Helvetica Neue", Arial;
+    margin: 0;
+    padding: 0;
+    background: var(--bg);
+    overflow: hidden;
+    color: #222;
+    font-size: 14px;
+}
+
+/* MAP agar full screen */
+#map {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 0; /* biar tetap di bawah sidebar/topbar */
+}
+
+/* TOPBAR */
+.topbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: var(--topbar-height);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 18px;
+    background: linear-gradient(90deg, var(--accent-1), var(--accent-2));
+    color: #fff;
+    z-index: 110;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.12);
+}
+
+.btn-account {
+    border: none;
+    background: #fff;
+    color: var(--accent-1);
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 13px;
+}
+.btn-account i {
+    margin-right: 6px;
+}
+
+/* foto profil di dropdown account */
+.profile-pic-lg {
+    width: 80px; /* ukuran besar di dalam dropdown */
+    height: 80px;
+    border-radius: 50%; /* bikin bulat */
+    object-fit: cover; /* biar nggak ketarik */
+    border: 2px solid #fff; /* opsional: kasih border putih biar rapi */
+}
+
+/* kalau nanti butuh ukuran kecil di topbar */
+.profile-pic-sm {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+/* Sidebar LEFT */
+.sidebar {
+    position: fixed;
+    top: calc(var(--topbar-height) + 12px);
+    left: 15px;
+    bottom: calc(var(--bottombar-height) + 18px);
+    width: var(--sidebar-left-width);
+    background: var(--accent-1);
+    color: #fff;
+    padding: 12px 8px;
+    border-radius: 0 8px 8px 0;
+    overflow: hidden;
+    z-index: 105;
+    transition: width 0.28s ease, padding 0.28s ease;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+    display: flex;
+    flex-direction: column;
+}
+.sidebar.collapsed {
+    width: var(--sidebar-collapsed-width);
+    padding: 12px 6px;
+}
+
+/* toggle icon */
+.toggle-sidebar-left {
+    cursor: pointer;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start; /* default: rata kiri */
+    margin-bottom: 6px;
+    height: 36px;
+    padding-left: 12px; /* jarak kiri */
+}
+.toggle-sidebar-left i {
+    font-size: var(--icon-size);
+}
+
+/* saat sidebar dicollapse, toggle icon rata tengah */
+.sidebar.collapsed .toggle-sidebar-left {
+    justify-content: center;
+    padding-left: 0; /* hapus jarak kiri */
+}
+
+/* hr bawah toggle */
+.sidebar hr {
+    border-color: rgba(255, 255, 255, 0.25);
+    margin: 6px 0;
+}
+
+/* menu links */
+.sidebar a {
+    display: flex;
+    align-items: center;
+    gap: 6px; /* lebih rapat */
+    color: #fff;
+    text-decoration: none;
+    padding: 8px 10px;
+    margin: 4px 0;
+    border-radius: 6px;
+    transition: background 0.15s;
+    font-size: 13px;
+    height: 34px;
+}
+.sidebar a i {
+    font-size: var(--icon-size);
+    width: 22px;
+    min-width: 22px;
+    text-align: center;
+}
+.sidebar a:hover,
+.sidebar a.active {
+    background: #145943;
+}
+
+.sidebar.collapsed a {
+    justify-content: center;
+}
+.sidebar.collapsed a span {
+    display: none;
+}
+
+/* Sidebar RIGHT */
+.sidebar-right {
+    position: fixed;
+    top: calc(var(--topbar-height) + 12px);
+    right: 15px;
+    bottom: calc(var(--bottombar-height) + 18px);
+    width: var(--sidebar-right-width);
+    background: #266763;
+    color: #fff;
+    padding: 12px;
+    border-radius: 8px 0 0 8px;
+    z-index: 105;
+    box-shadow: -4px 4px 12px rgba(0, 0, 0, 0.08);
+    transition: width 0.28s ease, padding 0.28s ease;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+/* ⬅️ Default tertutup */
+.sidebar-right.collapsed {
+    width: var(--sidebar-collapsed-width);
+    padding: 12px 6px;
+}
+
+/* header toggle */
+.sidebar-header {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    height: 36px;
+}
+.sidebar-header i {
+    font-size: var(--icon-size);
+    width: 22px;
+    min-width: 22px;
+    text-align: center;
+}
+.sidebar-right.collapsed .sidebar-header {
+    justify-content: center;
+}
+.sidebar-right.collapsed .sidebar-header .title {
+    display: none;
+}
+
+/* hr bawah header */
+.sidebar-right hr {
+    border-color: rgba(255, 255, 255, 0.25);
+    margin: 6px 0;
+}
+
+/* content rows */
+.sidebar-content p {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin: 6px 0;
+    font-size: 13px;
+    white-space: nowrap;
+    height: 30px;
+}
+.sidebar-content i {
+    font-size: var(--icon-size);
+    width: 22px;
+    min-width: 22px;
+    text-align: center;
+}
+.sidebar-right.collapsed .sidebar-content p {
+    justify-content: center;
+}
+.sidebar-right.collapsed .sidebar-content span {
+    display: none;
+}
+
+/* BOTTOM BAR */
+.bottom-bar {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: var(--bottombar-height);
+    background: #fff;
+    padding: 12px 16px;
+    box-shadow: 0 -3px 10px rgba(0, 0, 0, 0.06);
+    display: flex;
+    gap: 14px;
+    align-items: flex-end;
+    z-index: 103;
+    transition: transform 0.32s ease;
+}
+
+/* ⬅️ Default tertutup */
+.bottom-bar.closed {
+    transform: translateY(calc(100% - 52px));
+}
+
+/* production cards */
+
+.production-container {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+.production-card {
+    border-radius: 6px;
+    padding: 12px 15px;
+    font-weight: 500;
+    color: white;
+    min-width: 400px;
+}
+.production-22 {
+    background: #1c6758;
+}
+.production-23 {
+    background: #2d936c;
+}
+.production-24 {
+    background: #a3eb78;
+    color: black;
+}
+
+.chart-container {
+    flex: 1;
+    min-width: 250px;
+    height: 200px;
+}
+
+/* chart area */
+.chart-container {
+    flex: 1;
+    min-width: 200px;
+    height: 200px;
+    padding-bottom: 30px; /* ruang ekstra untuk label X */
+}
+
+/* hasil card */
+.hasil-card {
+    background: var(--accent-1);
+    color: #fff;
+    border-radius: 8px;
+    padding: 50px 20px;
+    min-width: 250px;
+    text-align: center;
+}
+.hasil-card h5 {
+    margin: 0 0 6px 0;
+    font-size: 23px;
+    font-weight: 600;
+}
+.hasil-item h3 {
+    font-size: 35px;
+    margin: 0;
+    font-weight: 700;
+}
+
+.hasil-item small {
+    font-size: 18px;
+    font-weight: 500;
+    margin-top: 2px;
+}
+
+/* toggle caret */
+.toggle-btn {
+    position: absolute;
+    top: 8px;
+    right: 10px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 18px;
+}
+.toggle-btn.rotate {
+    transform: rotate(180deg);
+    transition: transform 0.3s;
+}
+
+/* responsive */
+@media (max-width: 992px) {
+    :root {
+        --sidebar-left-width: 200px;
+        --sidebar-right-width: 220px;
+    }
+}
+@media (max-width: 768px) {
+    .sidebar,
+    .sidebar-right {
+        display: none;
+    }
+    .bottom-bar {
+        height: auto;
+        flex-direction: column;
+        align-items: stretch;
+    }
+    .chart-container {
+        height: 200px;
+    }
+    body {
+        overflow: auto;
+    }
+}
