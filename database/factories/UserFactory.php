@@ -24,12 +24,14 @@ class UserFactory extends Factory
     public function definition(): array
     {
         return [
+            'username' => fake()->userName(), // tambahin ini
             'name' => fake()->name(),
             'email' => fake()->unique()->safeEmail(),
             'email_verified_at' => now(),
-            'password' => static::$password ??= Hash::make('password'),
+            'password' => bcrypt('password'),
             'remember_token' => Str::random(10),
         ];
+
     }
 
     /**

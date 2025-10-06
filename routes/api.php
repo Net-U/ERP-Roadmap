@@ -1,9 +1,6 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\BlokKebunController;
 
-Route::get('/blok', function () {
-    return response()->json([
-        'message' => 'API blok jalan'
-    ]);
-});
+Route::get('/blok', [BlokKebunController::class, 'index']);

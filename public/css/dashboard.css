@@ -367,3 +367,20 @@ body {
         overflow: auto;
     }
 }
+
+/* ======================
+   🔹 Main Content Layout
+   ====================== */
+.main-content {
+    margin-left: var(--sidebar-left-width);
+    margin-top: var(--topbar-height);
+    margin-bottom: var(--bottombar-height);
+    padding: 20px;
+    transition: margin-left 0.3s ease;
+    overflow-y: auto; /* biar bisa scroll kalau konten panjang */
+    height: calc(100vh - var(--topbar-height) - var(--bottombar-height));
+}
+
+.sidebar.collapsed ~ .main-content {
+    margin-left: var(--sidebar-collapsed-width);
+}

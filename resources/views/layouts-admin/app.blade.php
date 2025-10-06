@@ -27,9 +27,6 @@
 </head>
 <body>
 
-  {{-- sidebar left --}}
-  @include('sidebar.sidebar-left')
-
   {{-- topbar --}}
   <div class="topbar">
     <div></div>
@@ -61,16 +58,15 @@
     </div>
   </div>
 
-  {{-- sidebar right --}}
-  @include('sidebar.sidebar-right')
+  <div class="layout">
+    {{-- sidebar left --}}
+    @include('sidebar.sidebar-left')
 
-  {{-- bottom bar --}}
-  @include('sidebar.bottom-bar')
-
-  {{-- main content --}}
-  <main class="pt-3">
-    @yield('content')
-  </main>
+    {{-- main content --}}
+    <main class="main-content pt-3">
+        @yield('content')
+    </main>
+</div>
 
   <!-- Bootstrap JS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>

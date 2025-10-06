@@ -10,9 +10,14 @@ document.addEventListener("DOMContentLoaded", function () {
        ======================= */
     const toggleLeft = el("toggle-sidebar-left");
     const sidebar = el("sidebar");
+    const mainContent = document.querySelector(".main-content");
+
     if (toggleLeft && sidebar) {
         toggleLeft.addEventListener("click", function () {
             sidebar.classList.toggle("collapsed");
+            if (mainContent) {
+                mainContent.classList.toggle("collapsed");
+            }
         });
     }
 
