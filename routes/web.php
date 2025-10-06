@@ -21,7 +21,6 @@ Route::post('/login', [LoginController::class, 'login'])->name('login.process');
 // logout
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
-
 /*
 |--------------------------------------------------------------------------
 | Dashboard Routes
@@ -33,49 +32,58 @@ Route::get('/', function () {
     return view('dashboard.dashboard'); // file: resources/views/dashboard/dashboard.blade.php
 })->middleware(['auth', RoleMiddleware::class . ':user,admin'])->name('dashboard');
 
-// admin only
+/*
+|--------------------------------------------------------------------------
+| Admin Routes
+|--------------------------------------------------------------------------
+*/
 Route::prefix('admin')
     ->middleware(['auth', RoleMiddleware::class . ':admin'])
-    ->name('admin.') // ⬅️ ini penting
+    ->name('admin.')
     ->group(function () {
+        // Dashboard admin
         Route::get('/', function () {
             return view('dashboard.dashboard');
         })->name('dashboard');
 
-        Route::get('import-geojson', [BlokKebunImportController::class, 'index'])->name('import.geojson');
-        Route::post('import-geojson', [BlokKebunImportController::class, 'store'])->name('import.geojson.store');
+        // Import GeoJSON (fitur upload file)
+        Route::get('/import-geojson', [BlokKebunImportController::class, 'index'])
+            ->name('import-geojson');
+        Route::post('/import-geojson', [BlokKebunImportController::class, 'store'])
+            ->name('import-geojson.store');
     });
-
-
-// manager only
-Route::prefix('manager')
-    ->middleware(['auth', RoleMiddleware::class . ':manager'])
-    ->group(function () {
-        Route::get('/', function () {
-            return view('dashboard.manager'); // bikin file resources/views/dashboard/manager.blade.php
-        })->name('manager.dashboard');
-    });
-
-// admin atau manager
-Route::prefix('management')
-    ->middleware(['auth', RoleMiddleware::class . ':admin,manager'])
-    ->group(function () {
-        Route::get('/reports', function () {
-            return "Halaman Laporan (bisa diakses admin & manager)";
-        })->name('management.reports');
-    });
-
-Route::post('/logout', function () {
-    Auth::logout();
-    request()->session()->invalidate();
-    request()->session()->regenerateToken();
-    return redirect('/login');
-})->name('logout');
-
 
 /*
 |--------------------------------------------------------------------------
-| Contoh API (opsional)
+| Manager Routes
+|--------------------------------------------------------------------------
+*/
+Route::prefix('manager')
+    ->middleware(['auth', RoleMiddleware::class . ':manager'])
+    ->name('manager.')
+    ->group(function () {
+        Route::get('/', function () {
+            return view('dashboard.manager'); // buat file resources/views/dashboard/manager.blade.php
+        })->name('dashboard');
+    });
+
+/*
+|--------------------------------------------------------------------------
+| Admin + Manager Shared Routes
+|--------------------------------------------------------------------------
+*/
+Route::prefix('management')
+    ->middleware(['auth', RoleMiddleware::class . ':admin,manager'])
+    ->name('management.')
+    ->group(function () {
+        Route::get('/reports', function () {
+            return "Halaman Laporan (bisa diakses admin & manager)";
+        })->name('reports');
+    });
+
+/*
+|--------------------------------------------------------------------------
+| Optional Example API
 |--------------------------------------------------------------------------
 */
 // Route::get('/api/blok', function () {

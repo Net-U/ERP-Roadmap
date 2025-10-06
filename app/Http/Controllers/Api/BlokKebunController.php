@@ -12,10 +12,10 @@ class BlokKebunController extends Controller
     {
         $today = Carbon::now();
 
-        $features = BlokKebun::all()->map(function($blok) use ($today) {
+        $features = BlokKebun::all()->map(function ($blok) use ($today) {
             $hari_jalan = $today->diffInDays(Carbon::parse($blok->tgl_panen_terakhir));
-            
-            // Logika status
+
+            // Tentukan status berdasarkan rotasi
             if ($hari_jalan < $blok->rotasi_panen * 0.5) {
                 $status = "hijau";
             } elseif ($hari_jalan < $blok->rotasi_panen) {
@@ -26,18 +26,21 @@ class BlokKebunController extends Controller
 
             return [
                 "type" => "Feature",
-                "geometry" => json_decode($blok->geom),
+                "geometry" => $blok->geom, // Sudah array hasil json_decode otomatis dari model
                 "properties" => [
-                    "kode" => $blok->kode_blok,
-                    "luas" => $blok->luas_ha,
-                    "status" => $status
-                ]
+                    "id" => $blok->id,
+                    "kode_blok" => $blok->kode_blok,
+                    "luas_ha" => $blok->luas_ha,
+                    "rotasi_panen" => $blok->rotasi_panen,
+                    "tgl_panen_terakhir" => $blok->tgl_panen_terakhir->toDateString(),
+                    "status" => $status,
+                ],
             ];
         });
 
         return response()->json([
             "type" => "FeatureCollection",
-            "features" => $features
+            "features" => $features,
         ]);
     }
 }

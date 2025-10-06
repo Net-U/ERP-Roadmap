@@ -15,7 +15,7 @@
     {{-- Form Upload --}}
     <div class="card shadow-sm">
         <div class="card-body">
-            <form action="{{ route('admin.import.geojson.store') }}" method="POST" enctype="multipart/form-data">
+            <form action="{{ route('admin.import-geojson.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <div class="mb-3">
                     <label for="geojson_file" class="form-label">Pilih File GeoJSON</label>

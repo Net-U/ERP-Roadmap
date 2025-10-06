@@ -13,8 +13,8 @@
 
   {{-- Menu hanya muncul kalau user admin --}}
   @if(Auth::check() && Auth::user()->role === 'admin')
-    <a href="{{ route('admin.import.geojson') }}" 
-      class="{{ request()->routeIs('admin.import.geojson') ? 'active' : '' }}">
+    <a href="{{ route('admin.import-geojson') }}" 
+      class="{{ request()->routeIs('admin.import-geojson') ? 'active' : '' }}">
       <i class="bi bi-upload"></i> <span>Import GeoJSON</span>
     </a>
   @endif

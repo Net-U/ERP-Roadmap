@@ -101,19 +101,19 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     /* =======================
-   🔹 Leaflet Map + Polygon
+   🔹 Leaflet Map + Blok Kebun dari Database
    ======================= */
     if (document.getElementById("map")) {
         // Inisialisasi map (pusat awal + zoom default)
-        var map = L.map("map").setView([-6.4331432, 106.4835269], 13); // zoom lebih jauh
+        var map = L.map("map").setView([-2.092, 112.011], 13);
 
-        // Base layers
+        // Base layer
         var osm = L.tileLayer(
             "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
             { attribution: "&copy; OpenStreetMap contributors" }
         );
 
-        // Google Hybrid (satelit + jalan + label)
+        // Google Hybrid (satelit + jalan)
         var googleHybrid = L.tileLayer(
             "http://{s}.google.com/vt/lyrs=y&x={x}&y={y}&z={z}",
             {
@@ -134,31 +134,38 @@ document.addEventListener("DOMContentLoaded", function () {
             .addTo(map);
 
         // Ambil GeoJSON dari API Laravel
-        fetch("/api/blok")
+        fetch("/api/blok-kebun")
             .then((res) => res.json())
             .then((data) => {
                 var geoLayer = L.geoJSON(data, {
                     style: function (feature) {
-                        let warna =
-                            feature.properties.status === "hijau"
-                                ? "green"
-                                : "red";
-                        return { color: warna, weight: 2, fillOpacity: 0.5 };
+                        // Warna berdasarkan rotasi panen
+                        const rotasi = feature.properties.rotasi_panen;
+                        let warna = "#2ecc71"; // hijau default
+
+                        if (rotasi <= 10) warna = "#f1c40f"; // kuning
+                        if (rotasi <= 5) warna = "#e74c3c"; // merah
+
+                        return { color: warna, weight: 2, fillOpacity: 0.6 };
                     },
                     onEachFeature: function (feature, layer) {
                         layer.bindPopup(`
-                        <b>Blok: ${feature.properties.kode}</b><br>
-                        Luas: ${feature.properties.luas} ha<br>
-                        Status: ${feature.properties.status}
+                        <b>Kode Blok:</b> ${feature.properties.kode_blok}<br>
+                        <b>Luas:</b> ${feature.properties.luas_ha} ha<br>
+                        <b>Rotasi Panen:</b> ${feature.properties.rotasi_panen} hari<br>
+                        <b>Tgl Panen Terakhir:</b> ${feature.properties.tgl_panen_terakhir}
                     `);
                     },
                 }).addTo(map);
 
-                // Zoom otomatis ke polygon TAPI kasih padding & batas zoom
-                map.fitBounds(geoLayer.getBounds(), {
-                    padding: [100, 100], // biar agak jauh
-                    maxZoom: 15, // batasi supaya nggak terlalu dekat
-                });
-            });
+                // Zoom otomatis ke semua blok
+                if (geoLayer.getBounds().isValid()) {
+                    map.fitBounds(geoLayer.getBounds(), {
+                        padding: [100, 100],
+                        maxZoom: 16,
+                    });
+                }
+            })
+            .catch((err) => console.error("Gagal ambil data GeoJSON:", err));
     }
 });

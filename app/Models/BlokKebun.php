@@ -18,6 +18,19 @@ class BlokKebun extends Model
 
     protected $casts = [
         'tgl_panen_terakhir' => 'date',
-        'geom' => 'array', // otomatis decode JSON ke array
     ];
+
+    // Auto-decode JSON string ke array saat diambil
+    public function getGeomAttribute($value)
+    {
+        return json_decode($value, true);
+    }
+
+    // Auto-encode array ke JSON string saat disimpan
+    public function setGeomAttribute($value)
+    {
+        $this->attributes['geom'] = is_array($value)
+            ? json_encode($value)
+            : $value;
+    }
 }
