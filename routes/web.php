@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\RoleMiddleware;
+use App\Http\Controllers\Admin\EmployeeController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Admin\BlokKebunImportController;
 
@@ -51,6 +52,18 @@ Route::prefix('admin')
             ->name('import-geojson');
         Route::post('/import-geojson', [BlokKebunImportController::class, 'store'])
             ->name('import-geojson.store');
+
+        // 📍 Manajemen Pegawai
+        Route::get('/dashboard/employees', [EmployeeController::class, 'index'])->name('employees.index');
+        Route::get('/dashboard/employees/{employee}', [EmployeeController::class, 'show'])->name('employees.show');
+        Route::get('/employees/import', [EmployeeController::class, 'showImportForm'])->name('employees.import');
+        Route::post('/employees/import', [EmployeeController::class, 'import'])->name('employees.import.store');
+        Route::get('/employees/export-full', [EmployeeController::class, 'exportFull'])->name('employees.exportFull');
+        Route::get('/employees/{employee}/export-word', [EmployeeController::class, 'exportWord'])->name('employees.exportWord');
+        Route::get('/register/update/{id}', [EmployeeController::class, 'editCustom'])->name('employees.editCustom');
+        Route::resource('employees', EmployeeController::class);
+
+
     });
 
 /*

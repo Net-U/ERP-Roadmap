@@ -16,13 +16,15 @@
 * {
     box-sizing: border-box;
 }
+
 body {
     font-family: "Poppins", system-ui, -apple-system, "Segoe UI", Roboto,
         "Helvetica Neue", Arial;
     margin: 0;
     padding: 0;
     background: var(--bg);
-    overflow: hidden;
+    overflow-y: auto; /* ✅ biarkan halaman bisa di-scroll */
+    overflow-x: hidden;
     color: #222;
     font-size: 14px;
 }
@@ -68,14 +70,14 @@ body {
 
 /* foto profil di dropdown account */
 .profile-pic-lg {
-    width: 80px; /* ukuran besar di dalam dropdown */
+    width: 80px;
     height: 80px;
-    border-radius: 50%; /* bikin bulat */
-    object-fit: cover; /* biar nggak ketarik */
-    border: 2px solid #fff; /* opsional: kasih border putih biar rapi */
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #fff;
 }
 
-/* kalau nanti butuh ukuran kecil di topbar */
+/* ukuran kecil di topbar */
 .profile-pic-sm {
     width: 32px;
     height: 32px;
@@ -112,22 +114,20 @@ body {
     color: #fff;
     display: flex;
     align-items: center;
-    justify-content: flex-start; /* default: rata kiri */
+    justify-content: flex-start;
     margin-bottom: 6px;
     height: 36px;
-    padding-left: 12px; /* jarak kiri */
+    padding-left: 12px;
 }
 .toggle-sidebar-left i {
     font-size: var(--icon-size);
 }
 
-/* saat sidebar dicollapse, toggle icon rata tengah */
 .sidebar.collapsed .toggle-sidebar-left {
     justify-content: center;
-    padding-left: 0; /* hapus jarak kiri */
+    padding-left: 0;
 }
 
-/* hr bawah toggle */
 .sidebar hr {
     border-color: rgba(255, 255, 255, 0.25);
     margin: 6px 0;
@@ -137,7 +137,7 @@ body {
 .sidebar a {
     display: flex;
     align-items: center;
-    gap: 6px; /* lebih rapat */
+    gap: 6px;
     color: #fff;
     text-decoration: none;
     padding: 8px 10px;
@@ -157,7 +157,6 @@ body {
 .sidebar a.active {
     background: #145943;
 }
-
 .sidebar.collapsed a {
     justify-content: center;
 }
@@ -183,14 +182,10 @@ body {
     display: flex;
     flex-direction: column;
 }
-
-/* ⬅️ Default tertutup */
 .sidebar-right.collapsed {
     width: var(--sidebar-collapsed-width);
     padding: 12px 6px;
 }
-
-/* header toggle */
 .sidebar-header {
     display: flex;
     align-items: center;
@@ -211,8 +206,6 @@ body {
 .sidebar-right.collapsed .sidebar-header .title {
     display: none;
 }
-
-/* hr bawah header */
 .sidebar-right hr {
     border-color: rgba(255, 255, 255, 0.25);
     margin: 6px 0;
@@ -257,14 +250,11 @@ body {
     z-index: 103;
     transition: transform 0.32s ease;
 }
-
-/* ⬅️ Default tertutup */
 .bottom-bar.closed {
     transform: translateY(calc(100% - 52px));
 }
 
 /* production cards */
-
 .production-container {
     display: flex;
     flex-direction: column;
@@ -288,18 +278,12 @@ body {
     color: black;
 }
 
-.chart-container {
-    flex: 1;
-    min-width: 250px;
-    height: 200px;
-}
-
 /* chart area */
 .chart-container {
     flex: 1;
     min-width: 200px;
     height: 200px;
-    padding-bottom: 30px; /* ruang ekstra untuk label X */
+    padding-bottom: 30px;
 }
 
 /* hasil card */
@@ -321,7 +305,6 @@ body {
     margin: 0;
     font-weight: 700;
 }
-
 .hasil-item small {
     font-size: 18px;
     font-weight: 500;
@@ -374,11 +357,12 @@ body {
 .main-content {
     margin-left: var(--sidebar-left-width);
     margin-top: var(--topbar-height);
-    margin-bottom: var(--bottombar-height);
+    margin-bottom: 20px; /* ✅ beri ruang bawah */
     padding: 20px;
     transition: margin-left 0.3s ease;
-    overflow-y: auto; /* biar bisa scroll kalau konten panjang */
-    height: calc(100vh - var(--topbar-height) - var(--bottombar-height));
+    height: auto !important; /* ✅ biarkan tinggi menyesuaikan isi */
+    min-height: calc(100vh - var(--topbar-height));
+    overflow-y: visible !important; /* ✅ biar nggak kepotong */
 }
 
 .sidebar.collapsed ~ .main-content {

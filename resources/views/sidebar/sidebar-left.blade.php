@@ -8,7 +8,13 @@
   </a>
   <a href="#"><i class="bi bi-file-earmark-text"></i> <span>Laporan</span></a>
   <a href="#"><i class="bi bi-bar-chart"></i> <span>Rendemen</span></a>
-  <a href="#"><i class="bi bi-people"></i> <span>Tenaga Kerja</span></a>
+
+      <li class="{{ request()->routeIs('admin.employees.index') ? 'active' : '' }}">
+        <a href="{{ route('admin.employees.index') }}">
+          <i class="bi bi-people"></i> <span>Karyawan</span>
+        </a>
+      </li>
+
   <a href="#"><i class="bi bi-gear"></i> <span>Pengaturan</span></a>
 
   {{-- Menu hanya muncul kalau user admin --}}
