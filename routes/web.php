@@ -3,8 +3,11 @@
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\RoleMiddleware;
-use App\Http\Controllers\Admin\EmployeeController;
+use App\Http\Controllers\AccountController;
+use App\Http\Controllers\HarvestController;
+use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Admin\EmployeeController;
 use App\Http\Controllers\Admin\BlokKebunImportController;
 
 /*
@@ -62,6 +65,19 @@ Route::prefix('admin')
         Route::get('/employees/{employee}/export-word', [EmployeeController::class, 'exportWord'])->name('employees.exportWord');
         Route::get('/register/update/{id}', [EmployeeController::class, 'editCustom'])->name('employees.editCustom');
         Route::resource('employees', EmployeeController::class);
+
+        // 📍 Akun & Registrasi
+        Route::get('/dashboard/register', [RegisterController::class, 'create'])->name('register.form');
+        Route::post('/dashboard/register', [RegisterController::class, 'store'])->name('register.store');
+
+        Route::get('/dashboard/accounts/create', [AccountController::class, 'create'])->name('accounts.create');
+        Route::post('/dashboard/accounts/store', [AccountController::class, 'store'])->name('accounts.store');
+
+        // Menyimpan data update
+        Route::put('/admin/employees/{id}', [RegisterController::class, 'update'])->name('employees.update');
+
+        Route::get('/harvest/create', [HarvestController::class, 'create'])->name('harvest.create');
+        Route::post('/harvest/store', [HarvestController::class, 'store'])->name('harvest.store');
 
 
     });

@@ -145,15 +145,15 @@ class EmployeeController extends Controller
             Excel::import(new EmployeeImport, $request->file('file'));
 
          // Lebih direkomendasikan pakai with() daripada Session::flash()
-        return redirect()->route('employees.index')->with('success', '✅ Data karyawan berhasil diimpor!');
+        return redirect()->route('admin.employees.index')->with('success', '✅ Data karyawan berhasil diimpor!');
 
         } catch (\Exception $e) {
             // Pesan gagal
-        return redirect()->route('employees.import')->with('error', '❌ Terjadi kesalahan saat impor: ' . $e->getMessage());
+        return redirect()->route('admin.employees.import')->with('error', '❌ Terjadi kesalahan saat impor: ' . $e->getMessage());
         }
 
         // Redirect kembali ke halaman employee
-        return redirect()->route('employees.index');
+        return redirect()->route('admin.employees.index');
     }
 
     public function exportFull()
@@ -311,6 +311,7 @@ class EmployeeController extends Controller
 
 
     public function editCustom($id)
+    
     {
         $employee    = Employee::findOrFail($id);
         $departments = Department::all();
@@ -320,6 +321,12 @@ class EmployeeController extends Controller
 
         return view('register.update', compact('employee', 'departments', 'positions', 'grades','employeesList'));
     }
+
+    public function edit($id)
+    {
+        return $this->editCustom($id);
+    }
+
 
     public function update(Request $request, $id)
     {

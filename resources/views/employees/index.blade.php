@@ -69,10 +69,11 @@
         </div>
       @endif
 
-      <!-- 📄 Pagination -->
-      <div class="mt-4 d-flex justify-content-center">
-        {{ $employees->links() }}
+      <!-- Pagination -->
+      <div class="pagination-container mt-4 d-flex justify-content-center">
+        {{ $employees->links('pagination::bootstrap-5') }}
       </div>
+
 
     </div>
   </div>

@@ -32,6 +32,7 @@ class DatabaseSeeder extends Seeder
         $this->call([
             DepartmentSeeder::class,
             PositionSeeder::class,
+            ImportGeojsonSeeder::class,
         ]);
 
         // 🎓 Buat 30 grade dengan variasi level dan type

@@ -184,7 +184,7 @@
     });
   </script>
 
-  {{-- ✅ SweetAlert2 CDN --}}
+  {{-- SweetAlert2 CDN --}}
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
   @if (session('success'))
@@ -212,5 +212,4 @@
   @endif
 
 
-  {{-- @include('partials.switch') --}}
 @endsection

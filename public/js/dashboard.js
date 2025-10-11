@@ -1,6 +1,5 @@
 // public/js/dashboard.js
 document.addEventListener("DOMContentLoaded", function () {
-    // helper to safely query
     function el(id) {
         return document.getElementById(id);
     }
@@ -85,8 +84,8 @@ document.addEventListener("DOMContentLoaded", function () {
                     x: {
                         grid: { display: false },
                         ticks: {
-                            autoSkip: false, // biar semua label bulan muncul
-                            maxRotation: 45, // miringin biar muat
+                            autoSkip: false,
+                            maxRotation: 45,
                             minRotation: 45,
                         },
                     },
@@ -101,71 +100,85 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     /* =======================
-   🔹 Leaflet Map + Blok Kebun dari Database
-   ======================= */
+       🔹 Leaflet Map + Toggle Polygon (Topbar)
+       ======================= */
     if (document.getElementById("map")) {
-        // Inisialisasi map (pusat awal + zoom default)
-        var map = L.map("map").setView([-2.092, 112.011], 13);
+        let map = L.map("map");
 
-        // Base layer
-        var osm = L.tileLayer(
-            "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-            { attribution: "&copy; OpenStreetMap contributors" }
-        );
-
-        // Google Hybrid (satelit + jalan)
-        var googleHybrid = L.tileLayer(
-            "http://{s}.google.com/vt/lyrs=y&x={x}&y={y}&z={z}",
+        // Basemap
+        L.tileLayer(
+            "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
             {
+                attribution:
+                    "Tiles © Esri &mdash; Source: Esri, Earthstar Geographics",
                 maxZoom: 20,
-                subdomains: ["mt0", "mt1", "mt2", "mt3"],
             }
-        );
+        ).addTo(map);
 
-        // Tambahkan layer default
-        googleHybrid.addTo(map);
+        let geoLayer;
+        let polygonVisible = true;
 
-        // Control switcher
-        L.control
-            .layers({
-                "Peta Biasa (OSM)": osm,
-                "Google Hybrid": googleHybrid,
-            })
-            .addTo(map);
-
-        // Ambil GeoJSON dari API Laravel
+        // Ambil GeoJSON
         fetch("/api/blok-kebun")
             .then((res) => res.json())
             .then((data) => {
-                var geoLayer = L.geoJSON(data, {
-                    style: function (feature) {
-                        // Warna berdasarkan rotasi panen
-                        const rotasi = feature.properties.rotasi_panen;
-                        let warna = "#2ecc71"; // hijau default
-
-                        if (rotasi <= 10) warna = "#f1c40f"; // kuning
-                        if (rotasi <= 5) warna = "#e74c3c"; // merah
-
-                        return { color: warna, weight: 2, fillOpacity: 0.6 };
+                geoLayer = L.geoJSON(data, {
+                    style: (feature) => {
+                        const colorMap = {
+                            hijau: "green",
+                            kuning: "yellow",
+                            merah: "red",
+                            biru: "blue",
+                        };
+                        return {
+                            color:
+                                colorMap[feature.properties.status] || "gray",
+                            fillOpacity: 0.5,
+                        };
                     },
-                    onEachFeature: function (feature, layer) {
-                        layer.bindPopup(`
-                        <b>Kode Blok:</b> ${feature.properties.kode_blok}<br>
-                        <b>Luas:</b> ${feature.properties.luas_ha} ha<br>
-                        <b>Rotasi Panen:</b> ${feature.properties.rotasi_panen} hari<br>
-                        <b>Tgl Panen Terakhir:</b> ${feature.properties.tgl_panen_terakhir}
-                    `);
+                    onEachFeature: (feature, layer) => {
+                        layer.bindPopup(
+                            `<b>Blok ${feature.properties.kode_blok}</b><br>
+                             Status: ${feature.properties.status}<br>
+                             Luas: ${feature.properties.luas_ha || "-"} ha`
+                        );
                     },
                 }).addTo(map);
 
-                // Zoom otomatis ke semua blok
                 if (geoLayer.getBounds().isValid()) {
-                    map.fitBounds(geoLayer.getBounds(), {
-                        padding: [100, 100],
-                        maxZoom: 16,
-                    });
+                    map.fitBounds(geoLayer.getBounds().pad(0.2));
                 }
             })
             .catch((err) => console.error("Gagal ambil data GeoJSON:", err));
+
+        // 🔘 Toggle Polygon di Topbar
+        const toggleButton = el("togglePolygon");
+        const polygonIcon = el("polygonIcon");
+
+        if (toggleButton && polygonIcon) {
+            toggleButton.addEventListener("click", function () {
+                if (!geoLayer) return;
+
+                if (polygonVisible) {
+                    map.removeLayer(geoLayer);
+                    polygonIcon.classList.replace("fa-eye", "fa-eye-slash");
+                    polygonIcon.classList.add("text-danger");
+                    toggleButton.classList.replace(
+                        "btn-outline-success",
+                        "btn-outline-danger"
+                    );
+                } else {
+                    geoLayer.addTo(map);
+                    polygonIcon.classList.replace("fa-eye-slash", "fa-eye");
+                    polygonIcon.classList.remove("text-danger");
+                    toggleButton.classList.replace(
+                        "btn-outline-danger",
+                        "btn-outline-success"
+                    );
+                }
+
+                polygonVisible = !polygonVisible;
+            });
+        }
     }
 });

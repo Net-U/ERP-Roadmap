@@ -368,3 +368,66 @@ body {
 .sidebar.collapsed ~ .main-content {
     margin-left: var(--sidebar-collapsed-width);
 }
+
+/* Pagination styling */
+.pagination {
+    display: flex;
+    justify-content: center;
+    list-style: none;
+    gap: 0.5rem;
+}
+
+.pagination .page-item .page-link {
+    color: #198754;
+    border: 1px solid #198754;
+    border-radius: 6px;
+    padding: 6px 12px;
+    transition: all 0.2s ease;
+}
+
+.pagination .page-item.active .page-link {
+    background-color: #198754;
+    color: #fff;
+}
+
+.pagination .page-item .page-link:hover {
+    background-color: #198754;
+    color: #fff;
+}
+
+#userMenu,
+#adminMenu {
+    transition: opacity 0.3s ease;
+}
+.hidden {
+    opacity: 0;
+    pointer-events: none;
+    position: absolute;
+}
+
+/* Saat sidebar collapse, sembunyikan teks menu dan tombol admin */
+.sidebar.collapsed #switchModeBtn {
+    opacity: 0;
+    transform: scale(0.8);
+    pointer-events: none;
+    transition: all 0.3s ease;
+}
+
+.sidebar.collapsed .sidebar-menu span {
+    display: none;
+}
+
+.sidebar.collapsed .sidebar-menu a {
+    justify-content: center;
+    padding: 8px 0;
+}
+
+.sidebar.collapsed .sidebar-menu i {
+    font-size: 18px;
+}
+
+/* efek pada main content */
+.main-content.collapsed {
+    margin-left: var(--sidebar-collapsed-width);
+    transition: margin-left 0.3s ease;
+}

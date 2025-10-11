@@ -1,10 +1,9 @@
-<!-- resources/views/layouts/app.blade.php -->
 <!DOCTYPE html>
 <html lang="id">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>@yield('title','Dashboard')</title>
+  <title>@yield('title', 'Dashboard')</title>
 
   <!-- Bootstrap & Icons -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -16,18 +15,12 @@
   <!-- Leaflet CSS -->
   <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
 
-  <!-- Leaflet JS -->
-  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-  <script src="https://unpkg.com/leaflet.gridlayer.googlemutant@latest/Leaflet.GoogleMutant.js"></script>
-
-
-
   <!-- Chart.js -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
 
-  {{-- topbar --}}
+  {{-- TOPBAR --}}
   <div class="topbar">
     <div></div>
     <div class="dropdown">
@@ -43,7 +36,6 @@
         <li><a class="dropdown-item" href="#"><i class="bi bi-person-lines-fill me-2"></i>Profil Saya</a></li>
         <li><a class="dropdown-item" href="#"><i class="bi bi-gear me-2"></i>Pengaturan</a></li>
         <li><hr class="dropdown-divider"></li>
-
         <li>
           <form action="{{ route('logout') }}" method="POST">
             @csrf
@@ -52,24 +44,54 @@
             </button>
           </form>
         </li>
-
-      
       </ul>
     </div>
   </div>
 
-  <div class="layout">
-    {{-- sidebar left --}}
+  {{-- === LAYOUT === --}}
+  <div class="d-flex">
+    {{-- SIDEBAR --}}
     @include('sidebar.sidebar-left')
 
-    {{-- main content --}}
-    <main class="main-content pt-3">
-        @yield('content')
+    {{-- MAIN CONTENT --}}
+    <main class="main-content flex-grow-1 p-4">
+      {{-- CONTENT --}}
+      @yield('content')
     </main>
-</div>
+  </div>
 
   <!-- Bootstrap JS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Leaflet JS -->
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <script src="https://unpkg.com/leaflet.gridlayer.googlemutant@latest/Leaflet.GoogleMutant.js"></script>
+
+  <!-- SweetAlert2 -->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+  <!--  SweetAlert Flash Message -->
+  <script>
+    @if(session('success'))
+      Swal.fire({
+        icon: 'success',
+        title: 'Sukses!',
+        text: '{{ session('success') }}',
+        confirmButtonColor: '#3085d6',
+        confirmButtonText: 'OK'
+      });
+    @endif
+
+    @if(session('error'))
+      Swal.fire({
+        icon: 'error',
+        title: 'Gagal!',
+        text: '{{ session('error') }}',
+        confirmButtonColor: '#d33',
+        confirmButtonText: 'OK'
+      });
+    @endif
+  </script>
 
   <!-- Custom JS -->
   <script src="{{ asset('js/dashboard.js') }}"></script>

@@ -143,12 +143,6 @@ class Employee extends Model
         return $this->hasOne(Salary::class)->latestOfMany(); // Laravel 9+ fitur `latestOfMany()`
     }
 
-    public function leaves()
-    {
-        return $this->hasMany(Leave::class);
-    }
-
-
     public function export()
     {
         // Ambil data

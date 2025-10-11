@@ -11,25 +11,37 @@ return new class extends Migration
      */
     public function up(): void
     {
+        // Tabel Users
         Schema::create('users', function (Blueprint $table) {
-            $table->id();
-            $table->string('username');
-            $table->string('name');
-            $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
-            $table->enum('role', ['admin', 'manager', 'user'])->default('user'); // 🔹 role access
-            $table->rememberToken();
-            $table->timestamps();
+            $table->id(); // Primary Key
+            $table->string('name'); // Nama lengkap user
+            $table->string('username')->unique(); // Username unik
+            $table->string('email')->unique(); // Email unik
+            $table->timestamp('email_verified_at')->nullable(); // Waktu verifikasi email
+            $table->string('password'); // Password terenkripsi
+
+            // ✅ Kolom role (ganti is_admin)
+            // Menggunakan enum agar terbatas pada 'admin' dan 'user' saja
+            $table->enum('role', [
+                'manajer',
+                'asmen',
+                'sekretariat',
+                'admin',
+                'user'
+            ])->default('user');
+
+            $table->rememberToken(); // Token untuk fitur "remember me"
+            $table->timestamps(); // Kolom created_at & updated_at
         });
 
-
+        // Tabel untuk reset password
         Schema::create('password_reset_tokens', function (Blueprint $table) {
             $table->string('email')->primary();
             $table->string('token');
             $table->timestamp('created_at')->nullable();
         });
 
+        // Tabel session (jika menggunakan fitur session Laravel)
         Schema::create('sessions', function (Blueprint $table) {
             $table->string('id')->primary();
             $table->foreignId('user_id')->nullable()->index();
