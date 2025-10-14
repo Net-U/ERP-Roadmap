@@ -47,6 +47,14 @@
         <i class="bi bi-tree-fill"></i> <span>Input Hasil Panen</span>
       </a>
 
+      <a href="{{ route('admin.harvest.index') }}" class="{{ request()->routeIs('admin.harvest.index') ? 'active' : '' }}">
+        <i class="bi bi-journal-text"></i> <span>Laporan Panen</span>
+      </a>
+
+      <a href="{{ route('admin.blok-kebun.update-laporan') }}" class="{{ request()->routeIs('admin.blok-kebun.update-laporan') ? 'active' : '' }}">
+        <i class="bi bi-journal-text"></i> <span>Update Laporan Panen</span>
+      </a>
+
       <a href="{{ route('admin.import-geojson') }}" class="{{ request()->routeIs('admin.import-geojson') ? 'active' : '' }}">
         <i class="bi bi-upload"></i> <span>Import GeoJSON</span>
       </a>

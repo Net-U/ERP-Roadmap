@@ -17,6 +17,7 @@ class DatabaseSeeder extends Seeder
 {
     public function run(): void
     {
+        // Nonaktifkan constraint sementara
         DB::statement('SET FOREIGN_KEY_CHECKS=0');
         User::truncate();
         Employee::truncate();
@@ -28,17 +29,17 @@ class DatabaseSeeder extends Seeder
         Penalty::truncate();
         DB::statement('SET FOREIGN_KEY_CHECKS=1');
 
-        // 🧹 Panggil seeder untuk department dan posisi
+        // 🧹 Seeder awal (tanpa panen dulu)
         $this->call([
             DepartmentSeeder::class,
             PositionSeeder::class,
             ImportGeojsonSeeder::class,
         ]);
 
-        // 🎓 Buat 30 grade dengan variasi level dan type
+        // 🎓 Buat Grade
         $grades = Grade::factory(10)->create();
 
-        // 👤 Admin user + data karyawan
+        // 👤 Admin user
         $adminUser = User::create([
             'name'     => 'Neet',
             'username' => 'ilham',
@@ -47,13 +48,13 @@ class DatabaseSeeder extends Seeder
             'role'     => 'admin',
         ]);
 
-        // Ambil satu departemen & posisi acak untuk admin
+        // Ambil data acak
         $adminDept  = Department::inRandomOrder()->first();
         $adminPos   = Position::inRandomOrder()->first();
         $adminGrade = $grades->random();
 
-        // 👨‍💼 Data Karyawan untuk Admin
-        Employee::create([
+        // 👨‍💼 Karyawan untuk Admin
+        $adminEmployee = Employee::create([
             'name'              => 'Neet Admin',
             'nrk'               => 'EMP000',
             'nik_sap'           => 'SAP00000000',
@@ -89,7 +90,6 @@ class DatabaseSeeder extends Seeder
             'grade_id'          => $adminGrade->id,
         ]);
 
-
         // 👤 User biasa
         $user = User::create([
             'name'     => 'User',
@@ -99,13 +99,12 @@ class DatabaseSeeder extends Seeder
             'role'     => 'user',
         ]);
 
-        // Ambil satu departemen & posisi acak untuk Ilham
         $department = Department::inRandomOrder()->first();
         $position   = Position::inRandomOrder()->first();
         $mainGrade  = $grades->random();
 
-        // 👨‍💼 Buat 1 karyawan utama
-        $employee = Employee::create([
+        // 👨‍💼 Karyawan utama
+        $mainEmployee = Employee::create([
             'name'              => 'Ilham Saputra',
             'nrk'               => 'EMP001',
             'nik_sap'           => 'SAP12345678',
@@ -141,11 +140,11 @@ class DatabaseSeeder extends Seeder
             'grade_id'          => $mainGrade->id,
         ]);
 
-        JobHistory::factory(2)->create(['employee_id' => $employee->id]);
-        Training::factory(2)->create(['employee_id' => $employee->id]);
-        Penalty::factory()->create(['employee_id' => $employee->id]);
+        JobHistory::factory(2)->create(['employee_id' => $mainEmployee->id]);
+        Training::factory(2)->create(['employee_id' => $mainEmployee->id]);
+        Penalty::factory()->create(['employee_id' => $mainEmployee->id]);
 
-        // 👥 Tambah banyak karyawan berdasarkan type Grade
+        // 👥 Tambahan karyawan random
         $jumlahPerGrade = [
             'PKWT'       => 3,
             'PKWTT'      => 3,
@@ -173,5 +172,8 @@ class DatabaseSeeder extends Seeder
                 }
             }
         }
+
+        // 🚜 Terakhir: panggil seeder panen (produksi)
+        $this->call(HarvestSeeder::class);
     }
 }

@@ -4,12 +4,12 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use App\Models\BlokKebun;
+use Carbon\Carbon;
 
 class ImportGeojsonSeeder extends Seeder
 {
     public function run(): void
     {
-        // Pastikan file geojson tersedia di folder public/geojson
         $path = public_path('a/erp11.geojson');
 
         if (!file_exists($path)) {
@@ -17,7 +17,6 @@ class ImportGeojsonSeeder extends Seeder
             return;
         }
 
-        // Baca isi file GeoJSON
         $geojson = json_decode(file_get_contents($path), true);
 
         if (!isset($geojson['features'])) {
@@ -32,11 +31,14 @@ class ImportGeojsonSeeder extends Seeder
             $props = $feature['properties'] ?? [];
             $geometry = json_encode($feature['geometry'] ?? []);
 
+            // 🔹 Jika tidak ada tanggal panen terakhir, buat tanggal acak 7–30 hari lalu
+            $tglPanenTerakhir = $props['tgl_panen_terakhir'] ?? Carbon::now()->subDays(rand(1, 7));
+
             BlokKebun::create([
                 'kode_blok' => $props['Nama_Blok'] ?? 'Tanpa Nama',
                 'luas_ha' => $props['luasana'] ?? 0,
-                'rotasi_panen' => $props['rotasi_panen'] ?? 14,
-                'tgl_panen_terakhir' => $props['tgl_panen_terakhir'] ?? now(),
+                'rotasi_panen' => $props['rotasi_panen'] ?? 7,
+                'tgl_panen_terakhir' => $tglPanenTerakhir,
                 'geom' => $geometry,
             ]);
 

@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="container">
-    <h2 class="mb-4">📂 Import Data Blok Kebun (GeoJSON)</h2>
+    <h2 class="mb-4">Import Data Blok Kebun (GeoJSON)</h2>
 
     {{-- Alert Success/Error --}}
     @if(session('success'))

@@ -6,7 +6,7 @@
     <div class="col-lg-8">
       <div class="card shadow-lg border-0 rounded-3">
         {{-- Header --}}
-        <div class="card-header bg-success text-white text-center py-3 rounded-top">
+        <div class="card-header text-white text-center py-3 rounded-top" >
           <h4 class="mb-0 fw-semibold">Form Update Karyawan</h4>
         </div>
 

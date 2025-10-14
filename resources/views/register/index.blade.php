@@ -266,7 +266,11 @@
               </div>
 
               <div class="text-left">
-                <button type="submit" class="btn btn-success px-5 py-2 fw-semibold">Simpan Data</button>
+                <button 
+                  type="submit" 
+                  class="btn btn-success px-5 py-2 fw-semibold custom-submit-btn">
+                  <i class="bi bi-check-lg me-1"></i> Simpan Data
+                </button>
               </div>
 
             </form>
@@ -277,7 +281,27 @@
   </div>
 
 </div>
+<style>
+  /* Warna default tombol */
+  .custom-submit-btn {
+    background-color: #155b46 !important;
+    border: none !important;
+    transition: all 0.3s ease;
+  }
 
+  /* Efek hover */
+  .custom-submit-btn:hover {
+    background-color: #1e7b60 !important; /* Hijau muda seperti sebelumnya */
+    transform: translateY(-1px);
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
+  }
+
+  /* Saat ditekan (active) */
+  .custom-submit-btn:active {
+    background-color: #134d3c !important; /* sedikit lebih gelap */
+    transform: scale(0.98);
+  }
+</style>
 {{-- Script --}}
 <script>
   document.addEventListener("DOMContentLoaded", function () {

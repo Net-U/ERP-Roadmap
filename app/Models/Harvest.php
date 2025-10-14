@@ -18,6 +18,7 @@ class Harvest extends Model
         'tonase',
         'tanggal_panen',
     ];
+    protected $dates = ['tanggal_panen'];
 
     // Relasi ke pekerja
     public function employee()

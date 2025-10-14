@@ -88,7 +88,7 @@
       <a href="{{ route('admin.employees.index') }}" class="btn btn-outline-secondary">
         <i class="fas fa-arrow-left me-1"></i> Kembali
       </a>
-      <button type="submit" class="btn btn-success">
+      <button type="submit" class="btn btn-success" >
         <i class="fas fa-upload me-1"></i> Import Sekarang
       </button>
     </div>

@@ -6,8 +6,8 @@
     <div class="row mt-4 mb-5">
       <div class="col-lg-8 mx-auto">
         <div class="card shadow-sm border-0 rounded-3">
-          <div class="card-header bg-success text-white text-center py-3 rounded-top">
-            <h4 class="mb-0 fw-semibold">Tambahkan Akun Karyawan</h4>
+         <div class="card-header text-white text-center py-3">
+          <h4 class="mb-0 fw-semibold">Tambahkan Akun Karyawan</h4>
           </div>
 
           <div class="card-body px-4 py-4">
@@ -58,8 +58,10 @@
 
               {{-- Tombol --}}
               <div class="text-left">
-                <button type="submit" class="btn btn-success px-4 py-2 fw-semibold">
-                  <i class="zmdi zmdi-check me-1"></i> Buat Akun
+                <button 
+                  type="submit" 
+                  class="btn btn-success px-5 py-2 fw-semibold custom-submit-btn">
+                  <i class="bi bi-check-lg me-1"></i> Buat Akun
                 </button>
               </div>
             </form>
@@ -70,4 +72,25 @@
   </div>
 
 </div>
+<style>
+  /* Warna default tombol */
+  .custom-submit-btn {
+    background-color: #155b46 !important;
+    border: none !important;
+    transition: all 0.3s ease;
+  }
+
+  /* Efek hover */
+  .custom-submit-btn:hover {
+    background-color: #1e7b60 !important; /* Hijau muda seperti sebelumnya */
+    transform: translateY(-1px);
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
+  }
+
+  /* Saat ditekan (active) */
+  .custom-submit-btn:active {
+    background-color: #134d3c !important; /* sedikit lebih gelap */
+    transform: scale(0.98);
+  }
+</style>
 @endsection

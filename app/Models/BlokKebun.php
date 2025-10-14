@@ -20,13 +20,13 @@ class BlokKebun extends Model
         'tgl_panen_terakhir' => 'date',
     ];
 
-    // Auto-decode JSON string ke array saat diambil
+    // Auto-decode JSON saat diambil
     public function getGeomAttribute($value)
     {
         return json_decode($value, true);
     }
 
-    // Auto-encode array ke JSON string saat disimpan
+    // Auto-encode ke JSON saat disimpan
     public function setGeomAttribute($value)
     {
         $this->attributes['geom'] = is_array($value)
